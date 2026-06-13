@@ -30,22 +30,23 @@ else
 fi
 
 # Persistência do config.xml
-# Se o usuário já tiver um config.xml em /config, ele deve sobrescrever o padrão
 if [ -f "$CONFIG_DIR/config.xml" ]; then
     echo "Usando config.xml persistente."
     cp -f "$CONFIG_DIR/config.xml" /app/Prowlarr/config.xml
 else
-    # Se ainda não existir, cria um config.xml padrão ao iniciar
     echo "Nenhum config.xml encontrado. O Prowlarr criará um novo."
 fi
 
-# API key opcional via variável de ambiente
-if [ -n "$PROWLARR_API_KEY" ]; then
-  echo "API key definida via PROWLARR_API_KEY."
-  export PROWLARR__APIKEY="$PROWLARR_API_KEY"
-else
-  echo "Nenhuma PROWLARR_API_KEY definida. Prowlarr gerará uma automaticamente."
-fi
+# Iniciar tinyproxy
+echo "Iniciando tinyproxy..."
+service tinyproxy start
+
+# Forçar uso do proxy
+export http_proxy="http://127.0.0.1:8888"
+export https_proxy="http://127.0.0.1:8888"
+
+# Forçar IPv4
+export DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 echo "Iniciando Prowlarr..."
 exec /app/Prowlarr/Prowlarr \
