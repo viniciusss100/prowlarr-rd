@@ -29,6 +29,7 @@ COPY config/Definitions/ /config/Definitions/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
 ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 EXPOSE 9696
