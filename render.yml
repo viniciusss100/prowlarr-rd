@@ -14,3 +14,7 @@ services:
         value: America/Recife
     ports:
       - port: 9696
+    disk:
+      - name: prowlarr-data
+        mountPath: /data
+        sizeGB: 10
