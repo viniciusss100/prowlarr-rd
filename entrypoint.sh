@@ -13,19 +13,26 @@ echo "CONFIG_DIR = $CONFIG_DIR"
 mkdir -p "$CONFIG_DIR"
 chmod -R 0777 "$CONFIG_DIR" || true
 
-# Diretório oficial de definições do Prowlarr
+# Diretórios
 PROWLARR_DEF_DIR="/app/Prowlarr/Definitions"
-
-# Diretório onde o usuário coloca indexadores customizados
 CUSTOM_DEF_DIR="$CONFIG_DIR/Definitions"
 
 echo "Verificando indexadores customizados em $CUSTOM_DEF_DIR"
 
+# Log do conteúdo
 if [ -d "$CUSTOM_DEF_DIR" ]; then
-    echo "Copiando indexadores customizados para $PROWLARR_DEF_DIR"
-    cp -f "$CUSTOM_DEF_DIR"/*.yml "$PROWLARR_DEF_DIR" 2>/dev/null || true
+    echo "Conteúdo encontrado:"
+    ls -l "$CUSTOM_DEF_DIR" || echo "(pasta vazia)"
 else
-    echo "Nenhum diretório de indexadores custom encontrados."
+    echo "Pasta $CUSTOM_DEF_DIR não existe."
+fi
+
+# Copiar .yml
+if ls "$CUSTOM_DEF_DIR"/*.yml >/dev/null 2>&1; then
+    echo "Copiando arquivos .yml para $PROWLARR_DEF_DIR"
+    cp -v "$CUSTOM_DEF_DIR"/*.yml "$PROWLARR_DEF_DIR"
+else
+    echo "Nenhum arquivo .yml encontrado em $CUSTOM_DEF_DIR"
 fi
 
 # Persistência do config.xml
