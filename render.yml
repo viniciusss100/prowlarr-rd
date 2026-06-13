@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: jackett
+    env: docker
+    plan: free
+    autoDeploy: false
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PUID
+        value: 1000
+      - key: PGID
+        value: 1000
+      - key: TZ
+        value: America/Recife
+    ports:
+      - port: 9117
