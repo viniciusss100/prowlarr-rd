@@ -29,8 +29,7 @@ COPY --from=build /app/Prowlarr /app/Prowlarr/
 RUN mkdir -p /config/Definitions
 
 # Copia DEFINITIONS corretamente (o ponto é ESSENCIAL)
-COPY config/Definitions/. /config/Definitions/
-
+COPY config/Definitions/ /config/Definitions/
 # tinyproxy config
 COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
 
