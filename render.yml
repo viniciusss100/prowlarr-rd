@@ -2,9 +2,9 @@ services:
   - type: web
     name: prowlarr
     env: docker
-    plan: free
-    autoDeploy: false
     dockerfilePath: ./Dockerfile
+    entrypoint: ["/entrypoint.sh"]
+    command: []
     envVars:
       - key: PUID
         value: 1000
