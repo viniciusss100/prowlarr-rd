@@ -17,19 +17,27 @@ RUN tar xf /tmp/prowlarr.tar.gz -C /app/Prowlarr --strip-components=1
 FROM debian:stable-slim
 
 RUN apt-get update && \
-    apt-get install -y libicu-dev libssl-dev && \
+    apt-get install -y libicu-dev libssl-dev tinyproxy && \
     apt-get clean
 
 WORKDIR /app
 
 COPY --from=build /app/Prowlarr /app/Prowlarr/
 
-# AQUI ESTÁ A CORREÇÃO
+# Copiar indexadores customizados para /config
 COPY config/Definitions/ /config/Definitions/
 
+# Copiar tinyproxy.conf
+COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
+
+# Copiar entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+# Fixar DNS
 RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
+
+# Forçar IPv4
 ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 EXPOSE 9696
