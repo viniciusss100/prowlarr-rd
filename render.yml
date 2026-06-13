@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: jackett
+    name: prowlarr
     env: docker
     plan: free
     autoDeploy: false
@@ -13,4 +13,4 @@ services:
       - key: TZ
         value: America/Recife
     ports:
-      - port: 9117
+      - port: 9696
