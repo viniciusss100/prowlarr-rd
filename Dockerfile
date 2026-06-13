@@ -29,6 +29,7 @@ COPY config/Definitions/ /config/Definitions/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 EXPOSE 9696
 ENTRYPOINT ["/entrypoint.sh"]
