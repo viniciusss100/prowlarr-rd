@@ -22,11 +22,20 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+# Copia o Prowlarr
 COPY --from=build /app/Prowlarr /app/Prowlarr/
-COPY config/Definitions/ /config/Definitions/
-COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
-COPY entrypoint.sh /entrypoint.sh
 
+# Garante que o diretório existe antes de copiar
+RUN mkdir -p /config/Definitions
+
+# Copia DEFINITIONS corretamente (o ponto é ESSENCIAL)
+COPY config/Definitions/. /config/Definitions/
+
+# tinyproxy config
+COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
+
+# entrypoint
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Forçar IPv4
