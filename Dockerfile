@@ -29,9 +29,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
-# FIX DO DNS
-RUN rm -f /etc/resolv.conf && echo "nameserver 1.1.1.1" > /etc/resolv.conf
-
+# Forçar IPv4
 ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 EXPOSE 9696
