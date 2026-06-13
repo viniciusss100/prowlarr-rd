@@ -22,15 +22,21 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+# Copia o Prowlarr
 COPY --from=build /app/Prowlarr /app/Prowlarr/
 
-RUN mkdir -p /data/Definitions
-COPY config/Definitions/. /data/Definitions/
+# Copia TODA a pasta config para /data
+RUN mkdir -p /data
+COPY config/ /data/
 
+# tinyproxy config
 COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
+
+# entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Forçar IPv4
 ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 EXPOSE 9696
