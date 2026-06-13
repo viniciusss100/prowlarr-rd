@@ -24,8 +24,8 @@ WORKDIR /app
 
 COPY --from=build /app/Prowlarr /app/Prowlarr/
 
-RUN mkdir -p /config/Definitions
-COPY config/Definitions/. /config/Definitions/
+RUN mkdir -p /data/Definitions
+COPY config/Definitions/. /data/Definitions/
 
 COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
 COPY entrypoint.sh /entrypoint.sh
