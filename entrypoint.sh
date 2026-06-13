@@ -21,7 +21,6 @@ CUSTOM_DEF_DIR="$CONFIG_DIR/Definitions"
 
 echo "Verificando indexadores customizados em $CUSTOM_DEF_DIR"
 
-# Copia indexadores customizados para o diretório oficial
 if [ -d "$CUSTOM_DEF_DIR" ]; then
     echo "Copiando indexadores customizados para $PROWLARR_DEF_DIR"
     cp -f "$CUSTOM_DEF_DIR"/*.yml "$PROWLARR_DEF_DIR" 2>/dev/null || true
