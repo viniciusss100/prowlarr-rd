@@ -17,29 +17,30 @@ INDEXERS_DST="$CONFIG_DIR/Definitions/Indexers"
 
 mkdir -p "$INDEXERS_DST"
 
-if [ -d "$INDEXERS_SRC" ] && [ ! -z "$(ls -A $INDEXERS_SRC 2>/dev/null)" ]; then
-    echo "[✓] Encontrados indexadores customizados"
-    ls -la "$INDEXERS_SRC"/*.yml 2>/dev/null | while read -r file; do
-        echo "  → $(basename $file)"
-    done
+if [ -d "$INDEXERS_SRC" ]; then
+    count=$(find "$INDEXERS_SRC" -name "*.yml" -type f 2>/dev/null | wc -l)
+    if [ "$count" -gt 0 ]; then
+        echo "[✓] Encontrados $count indexadores customizados"
+        find "$INDEXERS_SRC" -name "*.yml" -type f 2>/dev/null | while read -r file; do
+            echo "  → $(basename "$file")"
+        done
+    else
+        echo "[!] Nenhum indexador customizado encontrado"
+    fi
 else
-    echo "[!] Nenhum indexador customizado encontrado"
+    echo "[!] Pasta de indexadores não existe"
 fi
 
 # Copiar config.xml se existir (criado via UI do Prowlarr)
 if [ -f "$CONFIG_DIR/config.xml" ]; then
-    echo "[✓] Copiando config.xml existente..."
-    cp -f "$CONFIG_DIR/config.xml" /app/Prowlarr/config.xml
-else
-    echo "[!] Nenhum config.xml encontrado (será criado no primeiro acesso)"
+    echo "[✓] Copiando config.xml..."
+    cp -f "$CONFIG_DIR/config.xml" /app/Prowlarr/config.xml 2>/dev/null || true
 fi
 
-# Copiar outros arquivos de configuração importantes
-for file in "$CONFIG_DIR"/*.json "$CONFIG_DIR"/*.db "$CONFIG_DIR"/*.sqlite "$CONFIG_DIR"/*.sqlite3 2>/dev/null; do
-    if [ -f "$file" ]; then
-        echo "[✓] Copiando $(basename $file)..."
-        cp -f "$file" /app/Prowlarr/ 2>/dev/null || true
-    fi
+# Copiar arquivos de configuração importantes
+find "$CONFIG_DIR" -maxdepth 1 \( -name "*.json" -o -name "*.db" -o -name "*.sqlite" -o -name "*.sqlite3" \) -type f 2>/dev/null | while read -r file; do
+    echo "[✓] Copiando $(basename "$file")..."
+    cp -f "$file" /app/Prowlarr/ 2>/dev/null || true
 done
 
 echo ""
