@@ -23,21 +23,15 @@ RUN apt-get update && \
 WORKDIR /app
 
 COPY --from=build /app/Prowlarr /app/Prowlarr/
-
-# Copiar indexadores customizados para /config
 COPY config/Definitions/ /config/Definitions/
-
-# Copiar tinyproxy.conf
 COPY tinyproxy.conf /etc/tinyproxy/tinyproxy.conf
-
-# Copiar entrypoint
 COPY entrypoint.sh /entrypoint.sh
+
 RUN chmod +x /entrypoint.sh
 
-# Fixar DNS
-RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
+# FIX DO DNS
+RUN rm -f /etc/resolv.conf && echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
-# Forçar IPv4
 ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
 
 EXPOSE 9696
