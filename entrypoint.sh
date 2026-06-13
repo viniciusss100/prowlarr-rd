@@ -18,9 +18,8 @@ mkdir -p "$TARGET_DEF_DIR"
 echo "Conteúdo encontrado em $CUSTOM_DEF_DIR:"
 ls -l "$CUSTOM_DEF_DIR" || echo "(pasta vazia)"
 
-if ls "$CUSTOM_DEF_DIR"/*.yml >/dev/null 2>&1; then
-    echo "Copiando arquivos .yml para $TARGET_DEF_DIR"
-    cp -v "$CUSTOM_DEF_DIR"/*.yml "$TARGET_DEF_DIR"
+if ls "$CUSTOM_DEF_DIR/Indexers"/*.yml >/dev/null 2>&1; then
+    cp -v "$CUSTOM_DEF_DIR/Indexers"/*.yml "$TARGET_DEF_DIR/" || true
 else
     echo "Nenhum arquivo .yml encontrado."
 fi
